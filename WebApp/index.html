@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang='fr'>
+	<head>
+		<meta charset='utf-8'>
+		<title>FindYouWay Game</title>
+	</head>
+
+	
+	<link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+
+	<script src="lib/jquery-3.1.1.min.js"></script>
+
+	<link type="text/css" rel="stylesheet" href="css/materialize.css"  media="screen,projection"/>
+	<link rel="stylesheet" href="css/main.css" />
+
+	<script type="text/javascript" src="js/bin/materialize.min.js"></script>
+
+	<script src="lib/angular.min.js"></script>
+	
+
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
+	<script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
+
+	<script src="app/app.js"></script>
+	<script src="app/controllers/party_controller.js"></script>
+	<script src="app/controllers/score_controller.js"></script>
+	<script src="app/controllers/maps_controller.js"></script>
+	
+	<script src="app/directives/score_directive.js"></script>	
+	<script src="app/directives/indice_directive.js"></script>	
+	<body ng-app='findYourWay' class="grey darken-4 ">
+
+		<div class="col s10 m8 l6 center-align title blue-grey-text text-lighten-4"><h2>FINDYOURWAY</h2></div>
+		<div ng-controller='PartyController' id='Party' class="row" ng-if="!played">
+			<div class="input-field col l2 offset-l5 m6 offset-m3 s8 offset-s2">
+				<input type="text" name="pseudo" id="pseudo" ng-hide="played" ng-model="player.pseudo" class="blue-grey-text text-lighten-4">
+				<label ng-hide="played" for="pseudo" class="deep-orange-text text-darken-1">Entrez votre pseudo</label>
+
+			</div>
+			<div class="col s8 m6 l2 offset-l5 offset-m3 offset-s2 center-align">
+				<button class="btn waves-effect deep-orange darken-3" ng-hide="played" ng-click="addParty()">JOUER<i class="material-icons right">play_circle_outline</i>
+				</button>
+			</div>
+						
+			<div class="col l8  m10 s12 offset-l2 offset-m1 center-align reglement">
+				<ul class="collapsible popout" data-collapsible="accordion">
+					<li>
+						<div class="collapsible-header blue-grey lighten-5"><i class="material-icons right">room</i>REGLES DU JEU<i class="material-icons left">room</i></div>
+						<div class="collapsible-body blue-grey lighten-4"><p>Une partie consiste en une séquence de 5 points (ou éléments de chemin) correspondant à des villes ou des lieux D'EUROPE à placer sur une carte.</p><br><p>Pour chaque chaque point à placer, une indication textuelle ou photo est proposé au joueur</p><br><p> Le joueur place les points sur la carte les uns après les autres, le chemin ainsi construit est affiché sur la carte. Lorsque un point est correctement placé (i.e. placé à une distance inférieure à une valeur fixée), un indice sur la destination finale est affiché. </p><br><p> L'ensemble des indices permet de découvrir l'emplacement de la destination finale,que le joueur doit placer sur la carte. Ces indices peuvent former une adresse, ou une description détaillée permettant de placer avec précision la destination finale.</p><br><p> Si le joueur découvre la destination finale, il marque des points en fonction de la précision avec laquelle cette destination est placée. De plus des informations relatives à cette destination sont éventuellement affichées (url , texte, photos ).</p></div>
+					</li>
+					<li>
+						<div class="collapsible-header blue-grey lighten-5"><i class="material-icons right">location_off</i>SYSTEME DE POINT<i class="material-icons left">location_off</i></div>
+						<div class="collapsible-body blue-grey lighten-4"><span>Le score du joueur est calculé en tenant compte de la distance à laquelle il a placé la destination finale par rapport à sa position exacte : <br><br> - pour 1 destination placée à une distance de 30km: 10 pts <br> - pour 1 destination placée à une distance 60km: 8 pts <br> - pour 1 destinationm placée à une distance 120km: 6 pts <br> - pour 1 destination placée à une distance 250k: 3 pts <br> - pour 1 destination placée à une distance 600km: 1 pt <br> </span></div>
+					</li>
+				</ul>
+			</div>
+		</div>
+
+		<div  ng-if="played">
+			<div  ng-controller='MapsController' ng-if="played">
+			{{dd}}
+			sdfsdfsdfsdf
+				<div id="Maps" style="width:; height: 500px; border: #f4511e solid 2px">
+				</div>				
+			</div>
+		</div>
+					
+		
+		<div ng-controller='ScoreController' id='Score' ng-if="played" class="blue-grey-text text-lighten-4">
+			<div class="row">
+			<div class="col s12 m12 l12 center-align flow-text msgAccueil">
+				<p> Bienvenue {{pseudo}}</p>
+			</div>
+			<div class="col s6 m4 l4 offset-m1 offset-l1 center-align">
+				 
+  				<a class="btn waves-effect deep-orange darken-3" onclick="showToast()">Info</a>
+        
+			</div>
+			<div class="col s6 m4 l4 offset-m1 offset-l1 push-l1 push-m1 center-align flow-text">
+				<p> Score : {{score}} </p><br>
+			</div>
+			</div>
+
+
+
+
+			<div  class="row">
+				<fieldset class="col s10 m4 l4 offset-m1 offset-l1 offset-s1 center-align path grey darken-4">
+				<legend class="flow-text">Indications</legend>
+				<div class="paths" ng-repeat='indication in indications'><score></div> 
+
+				</fieldset>
+				<fieldset class="col s10 m4 l4 offset-m1 offset-l1 offset-s1 push-l1 push-m1 center-align indice grey darken-4">
+					<legend class="flow-text"> Indices </legend>
+					<div class="indices" ng-repeat='destination in destinations'><indice></div>
+
+				</fieldset>
+			</div>
+		</div>
+
+		<script type="text/javascript" src="js/bin/materialize.min.js"></script>
+		<script> 
+			function showToast(message, duration){
+				Materialize.toast('Bonjour et bienvenue sur notre jeu<br> N\'oubliez pas que les villes ne se situent qu\'en Europe!<br> Bon jeu et soyez précis afin d\'acquérir le plus de points!', 8000);
+			}
+		</script>
+	</body>
+</html>
